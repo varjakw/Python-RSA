@@ -20,11 +20,15 @@ The public key is represented by integers ``n`` and ``e``; and the private key b
 
 ### Step 1: Key Generation
 1: Choose two distinct prime numbers ``p`` and ``q``. These should be chosen at random and be similar in magnitude but differ in length by some digits to make factoring more difficult. These integers are kept secret.
+  
 2: Compute ``n = pq``. ``n`` is used as the modulus for both keys. Its length in bits is the key length. ``n`` is published as part of the public key.
+  
 3: Compute Carmichael's totient ``λ(n)`` where ``n = pq``. 
 Therefore ``λ(n) = lcm(λ(p), λ(q))``. Since ``p`` and ``q`` are prime, that means ``λ(p) = φ(p) = p − 1``. So ``λ(n) = lcm(p − 1, q − 1)``. 
 ``λ(n)`` is kept secret. 
+  
 4: Choose an integer ``e`` s.t. ``1 < e < λ(n)`` and ``gcd(e, λ(n)) = 1``. That is, ``e`` and ``λ(n)`` are coprime.
+  
 ### Step 2: Key Distribution
 ### Step 3: Encryption
 ### Step 4: Decryption
