@@ -1,7 +1,3 @@
-# Python-RSA
-RSA implementation in Python with PyCrypto which allows for PKCS#1 padding.
-
-
 # Rivest-Shamir-Adleman
 This is an asymmetric algorithm, meaning there are two different keys; a public key and a private key. 
 
