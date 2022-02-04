@@ -65,3 +65,7 @@ Given ``m``, Alice can recover the original message ``M`` by reversing the paddi
     
 ## Padding
 
+## Note
+
+If you attempt to encrypt a file more than once, you'll recieve an error ```javax.crypto.IllegalBlockSizeException```. 
+
