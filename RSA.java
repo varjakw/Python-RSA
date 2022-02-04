@@ -3,7 +3,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
-import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -47,6 +49,17 @@ class RSA {
         return encryptCipher.doFinal(message.getBytes());
     }
 
+    public static void encryptFile(File file, String publicKey) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, IOException {
+        byte[] fileBytes = Files.readAllBytes(file.toPath());
+        Cipher encryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
+
+        byte[] encryptedFileBytes = encryptCipher.doFinal(fileBytes);
+
+        Files.write(file.toPath(), encryptedFileBytes);
+
+    }
+
     public static String decryptMessage(byte[] encryptedMessageBytes, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         //another Cipher but made for decryption mode & with private key
         Cipher decryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -58,7 +71,7 @@ class RSA {
         return decryptMessage(Base64.getDecoder().decode(data.getBytes()), getPrivateKey(b64PrivateKey));
     }
 
-    public static void main(String[] args) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException {
+    public static void main(String[] args) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, IOException {
 
 /*
         String publicKeyString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
@@ -102,6 +115,7 @@ class RSA {
                 ta2.setCaretPosition(0);
                 ta2.setEditable(false);
                 JOptionPane.showMessageDialog(null, new JScrollPane(ta2), "Encrypted Text", JOptionPane.INFORMATION_MESSAGE);
+                main(args);
                 break;
             case 1: //decrypt message
                 String ciphertext = JOptionPane.showInputDialog ("What is your message?");
@@ -115,9 +129,18 @@ class RSA {
                 ta.setCaretPosition(0);
                 ta.setEditable(false);
                 JOptionPane.showMessageDialog(null, new JScrollPane(ta), "Decrypted Text", JOptionPane.INFORMATION_MESSAGE);
+                main(args);
                 break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "Your job is cancelled");
+            case 2: //encrypt a file
+                String filename = JOptionPane.showInputDialog ("Enter name of a file in the project directory");
+                File file = new File(filename);
+                encryptFile(file, publicKey);
+                JOptionPane.showMessageDialog(null, "File has been encrypted successfully", "File Encryption", JOptionPane.INFORMATION_MESSAGE);
+                main(args);
+                break;
+            case 3: //decrypt a file
+                JOptionPane.showMessageDialog(null, "Work In Progress");
+                main(args);
                 break;
         }
     }
