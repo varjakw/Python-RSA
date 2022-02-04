@@ -22,6 +22,8 @@ class RSA {
         String readableEncryptedMsg = Base64.getEncoder().encodeToString(encryptedMessage);
 
         String decryptedMessage = decryptMessage(encryptedMessage, privateKey);
+
+        JOptionPane.showMessageDialog(null, decryptedMessage);
     }
 
     public static KeyPair generateKP(){
