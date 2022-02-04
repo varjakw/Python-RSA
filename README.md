@@ -1,4 +1,4 @@
-# Rivest-Shamir-Adleman
+<img src="https://github.com/varjakw/RSA/blob/main/RSA.jpg" width="480" height="270" />
 This is an asymmetric algorithm, meaning there are two different keys; a public key and a private key. 
 
 A user with the public key is able to encrypt a message but only the use rin possession of the private key is able to decrypt it. In public-key (asymmetric) cryptography, the encryption key is public and distinct from the decryption key which is private. A user creates a publishes a public key based on two prime numbers, and an auxiliary value. The prime numbers are kept secret. A message can be encrypted by anyone using the private key but can only be decrypted by someone who knows the prime numbers. Its quite slow so it is not typically used for encryption of user data, but is used to transmit shared keys for a symmetric-key cryptosystem, which in turn is used for bulk encryption/decryption.
