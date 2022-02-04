@@ -53,6 +53,5 @@ Alice can decrypt the ciphertext ``c`` to get the plaintext ``m`` using her priv
 
 Given ``m``, Alice can recover the original message ``M`` by reversing the padding scheme.
 
-### Example
 
 
