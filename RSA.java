@@ -16,9 +16,12 @@ class RSA {
 
         String message = JOptionPane.showInputDialog ("What is your message?");
 
-        String encryptedMessage = encryptMessage(publicKey, message);
+        byte[] encryptedMessage = encryptMessage(publicKey, message);
 
+        //encode with base64 alphabet for readability in storage (like in a DB)
+        String readableEncryptedMsg = Base64.getEncoder().encodeToString(encryptedMessage);
 
+        String decryptedMessage = decryptMessage(encryptedMessage, privateKey);
     }
 
     public static KeyPair generateKP(){
@@ -32,7 +35,7 @@ class RSA {
         return kpGen.generateKeyPair();
     }
 
-    public static String encryptMessage(PublicKey publicKey, String message) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public static byte[] encryptMessage(PublicKey publicKey, String message) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         //a Cipher object for encryption with our public key
         Cipher encryptCipher = Cipher.getInstance("RSA");
         encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
@@ -40,9 +43,14 @@ class RSA {
         //now we encrypt the message:
         //change message into bytes
         byte[] secretMessageBytes = message.getBytes(StandardCharsets.UTF_8);
-        byte[] encryptedMessageBytes = encryptCipher.doFinal(secretMessageBytes);
+        return encryptCipher.doFinal(secretMessageBytes);
+    }
+    public static String decryptMessage(byte[] encryptedMessageBytes, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        //another Cipher but made for decryption mode & with private key
+        Cipher decryptCipher = Cipher.getInstance("RSA");
+        decryptCipher.init(Cipher.DECRYPT_MODE, privateKey);
 
-        //encode with base64 alphabet for readability in storage (like in a DB)
-        return Base64.getEncoder().encodeToString(encryptedMessageBytes);
+        byte[] decryptedMessageBytes = decryptCipher.doFinal(encryptedMessageBytes);
+        return new String(decryptedMessageBytes, StandardCharsets.UTF_8);
     }
 }
