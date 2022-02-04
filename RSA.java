@@ -49,17 +49,6 @@ class RSA {
         return encryptCipher.doFinal(message.getBytes());
     }
 
-    public static void encryptFile(File file, String publicKey) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, IOException {
-        byte[] fileBytes = Files.readAllBytes(file.toPath());
-        Cipher encryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        encryptCipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
-
-        byte[] encryptedFileBytes = encryptCipher.doFinal(fileBytes);
-
-        Files.write(file.toPath(), encryptedFileBytes);
-
-    }
-
     public static String decryptMessage(byte[] encryptedMessageBytes, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         //another Cipher but made for decryption mode & with private key
         Cipher decryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -73,24 +62,10 @@ class RSA {
 
     public static void main(String[] args) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, IOException {
 
-/*
-        String publicKeyString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
-
-        String privateKeyString = Base64.getEncoder().encodeToString(privateKey.getEncoded());
-
-        System.out.println("Private Key: " + privateKeyString);
-        System.out.println("Public Key: " + publicKeyString);
-*/
-        //the publicKey generated is in X509 format
-
-        //write to file
-        //keyPairGenerator.writeToFile("RSA/publicKey", keyPairGenerator.getPublicKey().getEncoded());
-        // keyPairGenerator.writeToFile("RSA/privateKey", keyPairGenerator.getPrivateKey().getEncoded());
-
         byte[] encryptedMessageBytes;
 
         int selection;
-        Object[] options = { "Encrypt a Message", "Decrypt a Message" , "Encrypt a File" , "Decrypt a File", "Quit" };
+        Object[] options = { "Encrypt a Message", "Decrypt a Message" , "Quit" };
         JPanel panel = new JPanel();
         panel.add(new JLabel("RSA Encryption"));
 
@@ -129,17 +104,6 @@ class RSA {
                 ta.setCaretPosition(0);
                 ta.setEditable(false);
                 JOptionPane.showMessageDialog(null, new JScrollPane(ta), "Decrypted Text", JOptionPane.INFORMATION_MESSAGE);
-                main(args);
-                break;
-            case 2: //encrypt a file
-                String filename = JOptionPane.showInputDialog ("Enter name of a file in the project directory");
-                File file = new File(filename);
-                encryptFile(file, publicKey);
-                JOptionPane.showMessageDialog(null, "File has been encrypted successfully", "File Encryption", JOptionPane.INFORMATION_MESSAGE);
-                main(args);
-                break;
-            case 3: //decrypt a file
-                JOptionPane.showMessageDialog(null, "Work In Progress");
                 main(args);
                 break;
         }
