@@ -1,3 +1,5 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.*;
 import java.security.*;
 
@@ -10,9 +12,11 @@ class RSA {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        kpGen.initialize(2048);
+        kpGen.initialize(2048); //keysize
         KeyPair pair = kpGen.generateKeyPair();
 
+        PrivateKey privateKey = pair.getPrivate();
+        PublicKey publicKey = pair.getPublic();
 
 
 
