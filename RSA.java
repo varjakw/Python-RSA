@@ -8,7 +8,7 @@ import java.security.*;
 import java.util.Base64;
 
 class RSA {
-    public static void main() throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+    public static void main(String[] args) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         //generate RSA key pair
         KeyPair pair = generateKP();
         PrivateKey privateKey = pair.getPrivate();
@@ -20,6 +20,8 @@ class RSA {
 
         //encode with base64 alphabet for readability in storage (like in a DB)
         String readableEncryptedMsg = Base64.getEncoder().encodeToString(encryptedMessage);
+
+        System.out.print("Encrypted Msg: " + encryptedMessage);
 
         String decryptedMessage = decryptMessage(encryptedMessage, privateKey);
 
