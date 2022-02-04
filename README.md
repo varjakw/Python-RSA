@@ -53,5 +53,15 @@ Alice can decrypt the ciphertext ``c`` to get the plaintext ``m`` using her priv
 
 Given ``m``, Alice can recover the original message ``M`` by reversing the padding scheme.
 
-
+## Simplified Algorithm (no padding)
+    Consider two prime numbers p and q.
+    Compute n = p*q
+    Compute ϕ(n) = (p – 1) * (q – 1)
+    Choose e such gcd(e , ϕ(n) ) = 1
+    Calculate d such e*d mod ϕ(n) = 1
+    Public Key {e,n} Private Key {d,n}
+    Cipher text C = Pe mod n where P = plaintext
+    For Decryption D = Dd mod n where D will refund the plaintext.
+    
+## Padding
 
