@@ -69,3 +69,50 @@ Given ``m``, Alice can recover the original message ``M`` by reversing the paddi
 
 If you attempt to encrypt a file more than once, you'll recieve an error ```javax.crypto.IllegalBlockSizeException```. 
 
+Speaking of; I went through the effort of adding file encryption and halfway through my implementation I was rudely reminded that RSA shouldn't be used for direct encryption of data. I got ```IllegalBlockSizeException: Data must not be longer than 256 bytes``` a number of times before I realised that a better option is to encrypt files with AES. I'm going to save such an implementation for another project as I just wanted to focus on RSA for this, so I will leave the relevant file encryption/decryption code here for my own future use.
+
+### Inside Main - JOptionPane cases
+```
+ case 2: //encrypt a file
+                String filename = JOptionPane.showInputDialog ("Enter name of a file in the project directory");
+                File file = new File(filename);
+                encryptFile(file, publicKey);
+                JOptionPane.showMessageDialog(null, "File has been encrypted successfully", "File Encryption", JOptionPane.INFORMATION_MESSAGE);
+                main(args);
+                break;
+            case 3: //decrypt a file
+                String filename2 = JOptionPane.showInputDialog ("Enter name of a file in the project directory");
+                File file2 = new File(filename2);
+                decryptFile(file2, privateKey);
+                JOptionPane.showMessageDialog(null, "File has been decrypted successfully", "File Decryption", JOptionPane.INFORMATION_MESSAGE);
+                //main(args);
+                break;
+```
+
+
+### Encrypting a File
+```
+ public static void encryptFile(File file, String publicKey) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, IOException {
+        byte[] fileBytes = Files.readAllBytes(file.toPath());
+        Cipher encryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
+
+        byte[] encryptedFileBytes = encryptCipher.doFinal(fileBytes);
+
+        Files.write(file.toPath(), encryptedFileBytes);
+
+    }
+ ```
+
+
+### Decrypting a File
+```
+ public static void decryptFile(File file, String privateKey) throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, IOException {
+        byte[] encryptedFileBytes = Files.readAllBytes(file.toPath());
+        Cipher decryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        decryptCipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKey));
+        byte[] decryptedFileBytes = decryptCipher.doFinal(encryptedFileBytes);
+        Files.write(file.toPath(), decryptedFileBytes);
+
+    }
+ ```
