@@ -116,3 +116,7 @@ Speaking of; I went through the effort of adding file encryption and halfway thr
 
     }
  ```
+
+
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-Java.svg)](https://forthebadge.com)
